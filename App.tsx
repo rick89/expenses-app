@@ -16,6 +16,14 @@ function BottomTabs() {
 	return (
 		<Tab.Navigator
 			screenOptions={({ navigation }) => ({
+				headerStyle: {
+					backgroundColor: '#3b10c9',
+					shadowColor: 'transparent', // this covers iOS
+					elevation: 0, // this covers Android
+				},
+				headerTitleStyle: {
+					color: 'white',
+				},
 				headerRight: () => {
 					return (
 						<TouchableOpacity
@@ -28,6 +36,7 @@ function BottomTabs() {
 									fontWeight: 'bold',
 									fontSize: 20,
 									marginRight: 20,
+									color: 'white',
 								}}
 							>
 								+
@@ -50,7 +59,7 @@ export default function App() {
 				<NavigationContainer>
 					<Stack.Navigator>
 						<Stack.Screen
-							name='Home'
+							name='AllTab'
 							component={BottomTabs}
 							options={{
 								headerShown: false,
@@ -59,14 +68,23 @@ export default function App() {
 						<Stack.Screen
 							name='AllExpensesScreen'
 							component={AllExpensesScreen}
+							options={{
+								title: 'All expenses',
+							}}
 						/>
 						<Stack.Screen
 							name='RecentExpensesScreen'
 							component={RecentExpensesScreen}
+							options={{
+								title: 'Recent expenses',
+							}}
 						/>
 						<Stack.Screen
 							name='ManageExpenseScreen'
 							component={ManageExpenseScreen}
+							options={{
+								title: 'Manage expense',
+							}}
 						/>
 					</Stack.Navigator>
 				</NavigationContainer>

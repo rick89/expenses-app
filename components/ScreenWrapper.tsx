@@ -11,6 +11,7 @@ export const ScreenWrapper = ({ children }: ScreenWrapperProps) => {
 
 const styles = StyleSheet.create({
 	container: {
+		backgroundColor: '#3b10c9',
 		padding: 20,
 		flex: 1,
 	},

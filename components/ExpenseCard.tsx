@@ -1,16 +1,25 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Expense } from '../store/slices/expenses-slice';
 import { DateTime } from 'luxon';
+import { FontAwesome } from '@expo/vector-icons';
 
 export type ExpenseCardProps = {
 	expense: Expense;
 	onDelete: (expense: Expense) => void;
+	onPress: (expense: Expense) => void;
 };
 
-export const ExpenseCard = ({ expense, onDelete }: ExpenseCardProps) => {
+export const ExpenseCard = ({
+	expense,
+	onDelete,
+	onPress,
+}: ExpenseCardProps) => {
 	const { title, amount, date } = expense;
 	return (
-		<View style={{ ...styles.container }}>
+		<TouchableOpacity
+			onPress={() => onPress(expense)}
+			style={{ ...styles.container }}
+		>
 			<View style={{ flexDirection: 'row' }}>
 				<Text style={{ ...styles.title }}>{title}</Text>
 				<Text style={{ ...styles.amount }}>£{amount}</Text>
@@ -23,18 +32,19 @@ export const ExpenseCard = ({ expense, onDelete }: ExpenseCardProps) => {
 					style={{ ...styles.delete }}
 					onPress={() => onDelete(expense)}
 				>
-					<Text>Delete</Text>
+					<FontAwesome name='trash-o' size={24} color='red' />
 				</TouchableOpacity>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		borderWidth: 1,
+		backgroundColor: 'white',
 		borderRadius: 8,
 		padding: 8,
+		marginBottom: 16,
 	},
 	title: {
 		fontWeight: 'bold',
