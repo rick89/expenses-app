@@ -1,20 +1,76 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { AllExpensesScreen } from './screens/AllExpensesScreen';
+import { RecentExpensesScreen } from './screens/RecentExpensesScreen';
+import { ManageExpenseScreen } from './screens/ManageExpenseScreen';
+import { store, persistor } from './store/store';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Text, TouchableOpacity } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function BottomTabs() {
+	return (
+		<Tab.Navigator
+			screenOptions={({ navigation }) => ({
+				headerRight: () => {
+					return (
+						<TouchableOpacity
+							onPress={() =>
+								navigation.navigate('ManageExpenseScreen')
+							}
+						>
+							<Text
+								style={{
+									fontWeight: 'bold',
+									fontSize: 20,
+									marginRight: 20,
+								}}
+							>
+								+
+							</Text>
+						</TouchableOpacity>
+					);
+				},
+			})}
+		>
+			<Tab.Screen name='Recent' component={RecentExpensesScreen} />
+			<Tab.Screen name='All' component={AllExpensesScreen} />
+		</Tab.Navigator>
+	);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+	return (
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
+				<NavigationContainer>
+					<Stack.Navigator>
+						<Stack.Screen
+							name='Home'
+							component={BottomTabs}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='AllExpensesScreen'
+							component={AllExpensesScreen}
+						/>
+						<Stack.Screen
+							name='RecentExpensesScreen'
+							component={RecentExpensesScreen}
+						/>
+						<Stack.Screen
+							name='ManageExpenseScreen'
+							component={ManageExpenseScreen}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</PersistGate>
+		</Provider>
+	);
+}
