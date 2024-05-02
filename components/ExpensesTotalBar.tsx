@@ -4,10 +4,13 @@ import { Expense } from '../store/slices/expenses-slice';
 
 export const ExpensesTotalBar = () => {
 	const expenses = useExpensesSelector((state) => state.expenses);
-	const total = expenses.reduce((accumulator, expense) => ({
-		...expense,
-		amount: accumulator.amount + expense.amount,
-	}));
+	const total = expenses.reduce(
+		(accumulator, expense) => ({
+			...expense,
+			amount: accumulator.amount + expense.amount,
+		}),
+		{} as { amount: number }
+	);
 
 	return (
 		<View style={{ ...styles.container }}>

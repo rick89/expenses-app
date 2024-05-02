@@ -7,8 +7,18 @@ import { DateTime } from 'luxon';
 //@ts-ignore
 export const RecentExpensesScreen = ({ navigation }) => {
 	const recentExpenses = useExpensesSelector((state) => state.expenses)
-		.sort((a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date))
-		.slice(0, 5);
+		.sort((a, b) => {
+			const aDate = DateTime.fromISO(a.date);
+			const bDate = DateTime.fromISO(b.date);
+			if (aDate > bDate) {
+				return -1;
+			}
+			if (aDate < bDate) {
+				return 1;
+			}
+			return 0;
+		})
+		.slice(0, 7);
 	return (
 		<ScreenWrapper>
 			<ExpensesTotalBar />
